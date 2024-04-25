@@ -25,24 +25,31 @@ def text_to_speech(user_text):
     except subprocess.CalledProcessError as e:
         print(f"Error running Piper TTS: {e}")
     else:
-        print(f"Sinthia: {user_text}")
+        print(f"\nTTS: {user_text}")
 
-        # Initialize pygame mixer
-        pygame.mixer.init()
+    # Playe Audio: If you don't need remove this block
+    play_audio(output_file)
 
-        # Load the generated audio file into a BytesIO object
-        with open(output_file, "rb") as audio_file:
-            audio_data = BytesIO(audio_file.read())
 
-        # Load the audio data into pygame mixer
-        pygame.mixer.music.load(audio_data)
-        
-        # Play the audio
-        pygame.mixer.music.play()
+# Function to play audio from the file
+def play_audio(output_file):
+    # Initialize pygame mixer
+    pygame.mixer.init()
 
-        # Wait for the audio to finish playing
-        while pygame.mixer.music.get_busy():
-            pygame.time.Clock().tick(10)
+    # Load the generated audio file into a BytesIO object
+    with open(output_file, "rb") as audio_file:
+        audio_data = BytesIO(audio_file.read())
+
+    # Load the audio data into pygame mixer
+    pygame.mixer.music.load(audio_data)
+    
+    # Play the audio
+    pygame.mixer.music.play()
+
+    # Wait for the audio to finish playing
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(10)
+
 
 if __name__ == "__main__":
     user_text = input("Enter the text for TTS: ")
