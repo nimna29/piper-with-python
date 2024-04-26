@@ -1,8 +1,7 @@
 import subprocess
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-import pygame
-from io import BytesIO
+from pydub import AudioSegment
 
 # Project path
 project_path = os.path.dirname(os.path.abspath(__file__))
@@ -35,25 +34,29 @@ def text_to_speech(user_text, file_name):
     else:
         print(f"\nTTS: {user_text}")
         
-        return output_file
+        # Call convert_to_pcm function after TTS conversion
+        output_file_converted = convert_to_pcm(output_file)
+        
+        return output_file_converted
 
 
-# Function to play audio from the file
-def play_audio(output_file):
-    # Initialize pygame mixer
-    pygame.mixer.init()
+# Function to convert audio to PCM format
+def convert_to_pcm(output_file):
+    # Load the WAV audio file
+    audio = AudioSegment.from_file(output_file)
 
-    # Load the generated audio file into a BytesIO object
-    with open(output_file, "rb") as audio_file:
-        audio_data = BytesIO(audio_file.read())
+    # Set parameters for PCM WAV format
+    audio = audio.set_sample_width(2)  # 16-bit PCM
+    audio = audio.set_frame_rate(44100)  # 44.1 kHz sample rate
 
-    # Load the audio data into pygame mixer
-    pygame.mixer.music.load(audio_data)
+    # Define the new file name with "converted" suffix
+    output_file_converted = os.path.splitext(output_file)[0] + "_converted.wav"
+
+    # Export the audio as PCM WAV
+    audio.export(output_file_converted, format="wav")
+    print("\nAudio saved successfully as PCM WAV format!")
+
+    # Delete the original WAV file
+    os.remove(output_file)
     
-    # Play the audio
-    pygame.mixer.music.play()
-
-    # Wait for the audio to finish playing
-    while pygame.mixer.music.get_busy():
-        pygame.time.Clock().tick(10)
-
+    return output_file_converted

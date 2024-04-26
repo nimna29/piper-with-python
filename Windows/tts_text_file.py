@@ -3,12 +3,13 @@ import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 from io import BytesIO
+from pydub import AudioSegment
 
 def text_to_speech(user_text):
     output_file = "./audio/tts_output.wav"
     piper_path = "./piper/piper.exe"
-    model_path = "./voice_models/en_US-ryan-medium.onnx"
-    config_path = "./voice_models/en_en_US_ryan_medium_en_US-ryan-medium.onnx.json"
+    model_path = "./voice_models/en_US-ryan-medium.onnx" # Change the model path if you are using a different model
+    config_path = "./voice_models/en_en_US_ryan_medium_en_US-ryan-medium.onnx.json" # Change the config path if you are using a different model
 
     command = [
         piper_path,
@@ -27,8 +28,31 @@ def text_to_speech(user_text):
     else:
         print(f"\nTTS: {user_text}")
     
+        # Call convert_to_pcm function after TTS conversion
+        convert_to_pcm(output_file)
+
+
+# Function to convert audio to PCM format
+def convert_to_pcm(output_file):
+    # Load the WAV audio file
+    audio = AudioSegment.from_file(output_file)
+
+    # Set parameters for PCM WAV format
+    audio = audio.set_sample_width(2)  # 16-bit PCM
+    audio = audio.set_frame_rate(44100)  # 44.1 kHz sample rate
+
+    # Define the new file name with "converted" suffix
+    output_file_converted = os.path.splitext(output_file)[0] + "_converted.wav"
+
+    # Export the audio as PCM WAV
+    audio.export(output_file_converted, format="wav")
+    print("\nAudio saved successfully as PCM WAV format!")
+
     # Playe Audio: If you don't need remove this block
-    play_audio(output_file)
+    play_audio(output_file_converted)
+
+    # Delete the original WAV file
+    os.remove(output_file)
 
 
 # Function to play audio from the file

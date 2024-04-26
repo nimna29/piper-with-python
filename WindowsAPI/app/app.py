@@ -46,13 +46,8 @@ async def text_file_to_speech(
 
         # Delete the uploaded file after processing
         os.remove(upload_file_path)
-
-        # Return a response with a download link to the generated audio file
-        audio_file_name = os.path.basename(output_file_path)
-        return Response(
-            content=output_file_path, 
-            headers={"Content-Disposition": f"attachment; filename={audio_file_name}"},
-            )
+        
+        return {"message": f"Audio File Created Successfully! - {output_file_path}"}
     
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Uploaded file not found.")
