@@ -12,9 +12,9 @@
 - I also created a FastAPI that can run this program.
 - _You can find the detailed tutorial below_
 
-### [Tutorial - Totally Free Text-to-Speech (TTS) for Day-to-Day Use](https://www.youtube.com/channel/UCQhsVo7tOEj8DjU4J3FJCsA)
+### [Tutorial - Totally Free Text-to-Speech (TTS) for Day-to-Day Use](https://youtu.be/FrPVXVjaYDs)
 
-<a href="https://www.youtube.com/channel/UCQhsVo7tOEj8DjU4J3FJCsA">
+<a href="https://youtu.be/FrPVXVjaYDs">
   <img width="800" alt="image" src="https://github.com/nimna29/piper-with-python/assets/77341013/79b6eb27-9683-45d2-8b80-4b40b2d117d3">
 </a>
 
